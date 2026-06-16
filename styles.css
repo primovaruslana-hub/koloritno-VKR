@@ -1960,12 +1960,15 @@ body::before {
         padding: 60px 40px;
     }
 
-    /* Хедер */
     .header-center {
-        font-size: 16px;
-        white-space: nowrap;
+        font-size: 14px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%; 
+        max-width: 200px; 
+        text-align: center;
+        word-break: break-word; 
     }
-    
     .reservation-btn {
         padding: 6px 12px;
         font-size: 14px;
