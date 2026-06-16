@@ -2222,10 +2222,13 @@ body::before {
     }
     
     .header-center {
-        font-size: 14px;
-        white-space: nowrap;
+        font-size: 11px;
         left: 50%;
         transform: translateX(-50%);
+        width: 90%; 
+        max-width: 200px; 
+        text-align: center;
+        word-break: break-word; 
     }
     
     .header-right {
