@@ -1,0 +1,2778 @@
+/* Основные стили страницы */
+body {
+    margin: 0;
+    padding: 0;
+    padding-top: 50px; /* Отступ сверху для фиксированной панели */
+    font-family: 'Ysabeau Infant', sans-serif;
+    background-image: url('1389.jpg'); /* Фоновое изображение */
+    height: 100vh;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    position: relative;
+}
+
+/* Затемнение фона для лучшей читаемости текста */
+body::before {
+    content: '';
+    position: fixed;
+    top: 50px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.75); /* Полупрозрачный черный оверлей */
+    z-index: -1;
+}
+
+/* Секция обложки (верхняя часть с названием ресторана) */
+.cover {
+    height: 100vh; /* Занимает всю высоту экрана */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Вертикальное центрирование */
+    align-items: center; /* Горизонтальное центрирование */
+    text-align: center;
+}
+
+/* Верхняя фиксированная панель навигации */
+.header-bar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 58px;
+    background-color: #440000; /* Темно-красный фон */
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    z-index: 1000; /* Высокий z-index для поверх всех элементов */
+    padding: 0 23px;
+    box-sizing: border-box; /* Чтобы padding не увеличивал ширину */
+}
+
+/* Центральный текст в верхней панели */
+.header-center {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%); /* Точное центрирование */
+    text-align: center;
+    width: auto;
+    pointer-events: none; /* Чтобы не мешало кликам на другие элементы */
+}
+
+/* Контейнер для кнопок в правой части панели */
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 15px; /* Расстояние между кнопками */
+    margin-left: auto; /* Прижимаем к правому краю */
+}
+
+/* Первый пустой div для баланса - скрыт */
+.header-bar > div:first-child {
+    display: none;
+}
+
+/* Кнопка личного кабинета (символ человека) */
+.account-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+/* Эффект при наведении на кнопку личного кабинета */
+.account-btn:hover {
+    transform: scale(1.1); /* Увеличение при наведении */
+}
+
+/* Кнопка бронирования столика */
+.reservation-btn {
+    background-color: #440000;
+    color: white;
+    border: 1px solid white;
+    padding: 7px 13px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Ysabeau Infant', sans-serif;
+}
+
+/* Эффект при наведении на кнопку бронирования */
+.reservation-btn:hover {
+    background-color: #440000;
+    transform: scale(1.05); /* Легкое увеличение */
+}
+
+/* Кнопка корзины */
+.cart-btn {
+    background-color: #440000;
+    color: white;
+    border: 1px solid white;
+    padding: 7px 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Ysabeau Infant', sans-serif;
+    position: relative; /* Для позиционирования бейджа */
+}
+
+/* Эффект при наведении на кнопку корзины */
+.cart-btn:hover {
+    background-color: #440000;
+    transform: scale(1.05);
+}
+
+/* Бейдж с количеством товаров в корзине */
+.cart-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: #ffca47; /* Желтый фон */
+    color: #7D1212; /* Темно-красный текст */
+    border-radius: 50%; /* Круглая форма */
+    width: 20px;
+    height: 20px;
+    font-size: 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+/* Кнопка открытия бокового меню */
+.menu-toggle {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 5px;
+    z-index: 15; /* Выше других элементов */
+}
+
+/* Общие стили для всех модальных окон */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); /* Полупрозрачный черный фон */
+    z-index: 2000; /* Очень высокий z-index для поверх всего */
+    justify-content: center; /* Горизонтальное центрирование */
+    align-items: center; /* Вертикальное центрирование */
+}
+
+/* Контент модального окна */
+.modal-content {
+    background: #000000;
+    padding: 30px;
+    border-radius: 0px;
+    width: 90%;
+    max-width: 700px;
+    max-height: 100vh; /* Максимальная высота - высота экрана */
+    overflow-y: auto; /* Вертикальная прокрутка при необходимости */
+    position: relative;
+    box-shadow: 0 0 20px rgba(255, 202, 71, 0.3); /* Золотая тень */
+}
+
+/* Кнопка закрытия модального окна */
+.close-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Заголовок в модальном окне */
+.modal h2 {
+    color: white;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 25px;
+    font-size: 2em;
+}
+
+/* Группа полей формы */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Метка поля формы */
+.form-group label {
+    display: block;
+    color: white;
+    margin-bottom: 8px;
+    font-size: 1.1em;
+}
+
+/* Поля ввода и выбора в форме */
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-bottom: 1px solid white; /* Подчеркивание вместо рамки */
+    border-radius: 0;
+    background-color: transparent; /* Прозрачный фон */
+    font-family: 'Ysabeau Infant', sans-serif;
+    font-size: 16px;
+    box-sizing: border-box;
+    color: white;
+}
+
+/* Стили при фокусе на поле ввода */
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0);
+}
+
+/* Стили для опций в выпадающем списке */
+.form-group select option {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 10px;
+}
+
+/* Звездочка для обязательных полей */
+.required-star {
+    color: #ff4444; /* Красный цвет */
+}
+
+/* Кнопка отправки формы */
+.submit-btn {
+    width: 35%;
+    padding: 15px;
+    background-color: #ffca47; /* Золотой фон */
+    color: #7D1212; /* Темно-красный текст */
+    border: none;
+    border-radius: 5px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-family: 'Ysabeau Infant', sans-serif;
+    margin-top: 35px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Эффект при наведении на кнопку отправки */
+.submit-btn:hover {
+    background-color: firebrick; /* Красный при наведении */
+}
+
+/* Примечание в форме */
+.contact-note {
+    color: #ddd;
+    font-size: 0.9em;
+    margin-top: 20px;
+    text-align: center;
+    line-height: 1.4;
+}
+
+/* Ссылка в примечании */
+.contact-note a {
+    color: #ffca47;
+    text-decoration: none;
+}
+
+/* Эффект при наведении на ссылку */
+.contact-note a:hover {
+    text-decoration: underline;
+}
+
+/* Боковая панель меню (навигация) */
+.sidebar {
+    position: fixed;
+    top: 0;
+    right: -360px; /* Изначально скрыта за правым краем */
+    width: 360px;
+    height: 100vh;
+    background: linear-gradient(to bottom, #660E0E, #000000); /* Красный градиентный фон */
+    z-index: 1001; /* Выше header-bar */
+    transition: right 0.3s ease; /* Плавная анимация появления */
+    padding: 20px;
+    box-sizing: border-box;
+    overflow-y: auto; /* Вертикальная прокрутка при необходимости */
+}
+
+/* Класс для открытой боковой панели */
+.sidebar.open {
+    right: 0; /* Панель появляется справа */
+}
+
+/* Кнопка закрытия боковой панели */
+.close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Логотип в боковой панели */
+.sidebar-logo {
+    width: 100%;
+    max-width: 220px;
+    height: 150px;
+    display: block;
+    margin: 0 auto 20px; /* Центрирование и отступ снизу */
+    padding: 45px 0;
+    box-sizing: border-box;
+}
+
+/* Заголовок в боковой панели */
+.sidebar-title {
+    font-size: 2em;
+    color: #FFF;
+    text-shadow: 0 0 5px #FFF, 0 0 10px #ffca47, 0 0 15px #ffca47;
+    margin-bottom: 10px;
+}
+
+/* Подзаголовок в боковой панели */
+.sidebar-subtitle {
+    font-size: 1em;
+    color: #ffca47;
+}
+
+/* Список пунктов меню в боковой панели */
+.menu-items {
+    list-style: none;
+    padding: 0;
+    margin: 60px 0;
+}
+
+/* Элемент списка меню */
+.menu-items li {
+    margin: 15px 0;
+}
+
+/* Ссылка в пункте меню */
+.menu-items a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.2em;
+    display: block;
+    padding: 10px;
+    background: rgba(255, 20, 147, 0.1); /* Легкий розовый фон */
+    border-radius: 5px;
+    transition: background 0.3s;
+}
+
+/* Эффект при наведении на ссылку меню */
+.menu-items a:hover {
+    background: rgba(255, 20, 147, 0.3);
+    color: #ffca47; /* Золотой цвет при наведении */
+}
+
+/* Информационный блок в боковой панели (адрес и часы работы) */
+.sidebar-info {
+    position: absolute;
+    bottom: 40px;
+    left: 25px;
+    right: 25px;
+    text-align: left;
+    font-size: 1em;
+    color: #DDD;
+}
+
+/* Адрес и часы работы в боковой панели */
+.sidebar-info .address,
+.sidebar-info .hours {
+    margin: 5px 0;
+}
+
+/* Неоновая надпись "КОЛОРИТНО" на главной странице */
+.neon-title {
+    font-size: 5em;
+    font-weight: 900;
+    text-transform: uppercase;
+    color: #FFF;
+    text-shadow: 0 0 3px #FFF, 0 0 6px #FFF, 0 0 9px #FFF, 0 0 12px #ffca47, 0 0 15px #ffca47, 0 0 20px #ffca47, 2px 0 0 #FFF;
+    animation: neonGlow 2s ease-in-out infinite alternate; /* Пульсирующая анимация */
+    margin: 250px 0;
+}
+
+/* Ключевые кадры для неонового свечения */
+@keyframes neonGlow {
+    from {
+        text-shadow: 0 0 5px #FFF, 0 0 10px #ffca47, 0 0 15px #ffca47, 0 0 20px #ffca47;
+    }
+
+    to {
+        text-shadow: 0 0 20px #FFF, 0 0 30px #ffca47, 0 0 40px #ffca47, 0 0 50px #ffca47;
+    }
+}
+
+/* Информационный текст на главной странице */
+.info-text {
+    font-size: 1.2em;
+    margin: 20px 0;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    line-height: 1.5;
+}
+
+/* Адрес в информационном тексте */
+.info-text .address {
+    font-size: 1em;
+}
+
+/* Часы работы в информационном тексте */
+.info-text .hours {
+    font-size: 1em;
+    margin-top: 10px;
+}
+
+/* Общие стили для секций (О ресторане, Меню и т.д.) */
+.section {
+    padding: 80px 150px;
+    text-align: left;
+    background: black;
+    border-radius: 0px;
+    margin: 0px auto;
+    max-width: 2000px;
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+    box-sizing: border-box;
+}
+
+/* Контейнер для текстового контента в секции */
+.section-content {
+    flex: 1;
+    padding-left: 40px;
+}
+
+/* Колонка с изображениями в секции */
+.images-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column; /* Изображения в столбик */
+    gap: 30px; /* Отступ между изображениями */
+    max-width: 600px;
+}
+
+/* Изображение в секции */
+.section-image {
+    width: 100%;
+    height: auto;
+    max-height: 800px;
+    object-fit: cover; /* Обрезка с сохранением пропорций */
+    border-radius: 0px;
+}
+
+/* Заголовок секции */
+.section h2 {
+    font-size: 3em;
+    color: white;
+    margin-bottom: 0px;
+    margin-top: 0;
+}
+
+/* Текст в секции */
+.section p {
+    font-size: 1.3em;
+    line-height: 1.2;
+    margin-bottom: 0px;
+    color: white;
+}
+
+/* Секция доставки */
+.delivery-section {
+    padding: 80px 150px;
+    background: black;
+    border-radius: 0px;
+    margin: 0px auto;
+    max-width: 2000px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Заголовок секции доставки */
+.delivery-section h2 {
+    font-size: 3em;
+    color: white;
+    margin-bottom: 30px;
+    margin-top: 0;
+    text-align: center;
+}
+
+/* Навигация по категориям блюд */
+.category-nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap; /* Перенос на новую строку при нехватке места */
+    gap: 15px;
+    margin-bottom: 0px;
+    padding: 0 20px;
+}
+
+/* Кнопка категории */
+.category-btn {
+    background-color: rgba(255, 202, 71, 0.1); /* Полупрозрачный золотой фон */
+    color: white;
+    border: 1px solid #ffca47;
+    padding: 10px 20px;
+    border-radius: 25px; /* Скругленные углы */
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    font-family: 'Ysabeau Infant', sans-serif;
+}
+
+/* Эффект при наведении на кнопку категории */
+.category-btn:hover {
+    background-color: rgba(255, 202, 71, 0.3);
+    transform: scale(1.05);
+}
+
+/* Активная кнопка категории */
+.category-btn.active {
+    background-color: #ffca47; /* Золотой фон */
+    color: #7D1212; /* Темно-красный текст */
+}
+
+/* Контейнер категории блюд */
+.category-container {
+    margin-bottom: 60px;
+    display: none; /* По умолчанию скрыты */
+}
+
+/* Активный контейнер категории */
+.category-container.active {
+    display: block;
+}
+
+/* Заголовок категории */
+.category-container h3 {
+    font-size: 2em;
+    color: #ffca47;
+    margin-bottom: 30px;
+    text-align: center;
+    border-bottom: 2px solid #ffca47;
+    padding-bottom: 10px;
+    display: inline-block;
+    width: auto;
+    margin-left: 50%;
+    transform: translateX(-50%); /* Точное центрирование */
+}
+
+/* Сетка блюд (3 в ряд) */
+.dishes-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 колонки равной ширины */
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+/* Карточка блюда */
+.dish-card {
+    background: rgba(255, 255, 255, 0.05); /* Полупрозрачный белый фон */
+    border-radius: 0px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Занимает всю высоту */
+}
+
+/* Эффект при наведении на карточку блюда */
+.dish-card:hover {
+    transform: translateY(-5px); /* Подъем карточки */
+    box-shadow: 0 10px 25px rgba(255, 202, 71, 0.2); /* Золотая тень */
+}
+
+/* Изображение в карточке блюда */
+.dish-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover; /* Обрезка с сохранением пропорций */
+    border-bottom: 1px solid rgba(255, 202, 71, 0.3); /* Золотая линия разделения */
+}
+
+/* Информация о блюде в карточке */
+.dish-info {
+    padding: 20px;
+    flex-grow: 1; /* Занимает доступное пространство */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Название блюда */
+.dish-name {
+    font-size: 1.5em;
+    color: white;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* Состав блюда */
+.dish-composition {
+    font-size: 1em;
+    color: #ccc; /* Светло-серый текст */
+    margin-bottom: 15px;
+    line-height: 1.4;
+    flex-grow: 1;
+}
+
+/* Вес блюда */
+.dish-weight {
+    color: #ffca47; /* Золотой цвет */
+    font-size: 0.9em;
+    margin-bottom: 15px;
+}
+
+/* Нижняя часть карточки (цена и кнопка) */
+.dish-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto; /* Прижимаем к низу карточки */
+}
+
+/* Цена блюда */
+.dish-price {
+    font-size: 1.4em;
+    color: white;
+    font-weight: bold;
+}
+
+/* Кнопка добавления в корзину */
+.add-to-cart-btn {
+    background-color: #ffca47; /* Золотой фон */
+    color: #7D1212; /* Темно-красный текст */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    font-family: 'Ysabeau Infant', sans-serif;
+    font-size: 1em;
+}
+
+/* Эффект при наведении на кнопку добавления в корзину */
+.add-to-cart-btn:hover {
+    background-color: firebrick; /* Красный фон */
+    color: white; /* Белый текст */
+    transform: scale(1.05);
+}
+
+/* Кнопка "Показать еще" */
+.show-more-btn {
+    display: block;
+    margin: 40px auto;
+    background-color: transparent; /* Прозрачный фон */
+    color: #ffca47;
+    border: 2px solid #ffca47;
+    padding: 15px 40px;
+    font-size: 1.2em;
+    font-weight: bold;
+    border-radius: 30px; /* Сильно скругленные углы */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Ysabeau Infant', sans-serif;
+    text-transform: uppercase; /* Верхний регистр */
+    letter-spacing: 1px;
+}
+
+/* Эффект при наведении на кнопку "Показать еще" */
+.show-more-btn:hover {
+    background-color: #ffca47; /* Золотой фон */
+    color: #7D1212; /* Темно-красный текст */
+    transform: scale(1.05);
+}
+
+/* Модальное окно корзины */
+.cart-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 2002;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Контент модального окна корзины */
+.cart-modal-content {
+    background: #000000;
+    padding: 30px;
+    border-radius: 0px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh; /* 90% высоты экрана */
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 0 30px rgba(255, 202, 71, 0.5);
+}
+
+/* Кнопка закрытия модального окна корзины */
+.close-cart-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+/* Заголовок модального окна корзины */
+.cart-modal h2 {
+    color: white;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 2.5em;
+}
+
+/* Контейнер для товаров в корзине */
+.cart-items-container {
+    margin-bottom: 30px;
+}
+
+/* Элемент товара в корзине */
+.cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Серая линия разделения */
+}
+
+/* Информация о товаре в корзине */
+.cart-item-info {
+    flex: 1;
+}
+
+/* Название товара в корзине */
+.cart-item-name {
+    font-size: 1.5em;
+    color: white;
+    margin-bottom: 5px;
+}
+
+/* Цена товара в корзине */
+.cart-item-price {
+    color: white;
+    font-size: 0.8em;
+}
+
+/* Элементы управления количеством товара в корзине */
+.cart-item-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+/* Контейнер для кнопок изменения количества */
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Кнопка изменения количества товара */
+.quantity-btn {
+    background-color: white;
+    color: #7D1212;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%; /* Круглая кнопка */
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1.2em;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Эффект при наведении на кнопку изменения количества */
+.quantity-btn:hover {
+    background-color: firebrick; /* Красный фон */
+    color: white; /* Белый текст */
+}
+
+/* Отображение текущего количества товара */
+.quantity {
+    color: white;
+    font-size: 1.2em;
+    min-width: 30px; /* Минимальная ширина */
+    text-align: center;
+}
+
+/* Блок с итоговой суммой в корзине */
+.cart-total {
+    text-align: right;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid white; /* Белая линия разделения */
+}
+
+/* Итоговая цена в корзине */
+.total-price {
+    font-size: 1.8em;
+    color: white;
+    font-weight: bold;
+}
+
+/* Контейнер для кнопок действий в корзине */
+.cart-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    gap: 20px; /* Расстояние между кнопками */
+}
+
+/* Кнопка очистки корзины */
+.clear-cart-btn {
+    background-color: transparent; /* Прозрачный фон */
+    color: #ff4444; /* Красный текст */
+    border: 1px solid #ff4444; /* Красная рамка */
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1em;
+    flex: 1; /* Занимает 1 часть доступного пространства */
+}
+
+/* Эффект при наведении на кнопку очистки корзины */
+.clear-cart-btn:hover {
+    background-color: #ff4444; /* Красный фон */
+    color: white; /* Белый текст */
+}
+
+/* Кнопка оформления заказа в корзине */
+.checkout-btn {
+    background-color: #ffca47; /* Золотой фон */
+    color: #7D1212; /* Темно-красный текст */
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1em;
+    flex: 2; /* Занимает 2 части доступного пространства */
+}
+
+/* Эффект при наведении на кнопку оформления заказа */
+.checkout-btn:hover {
+    background-color: firebrick; /* Красный фон */
+    color: white; /* Белый текст */
+}
+
+/* Секция меню ресторана */
+.menu-section {
+    padding: 80px 150px;
+    text-align: center;
+    background: black;
+    border-radius: 0px;
+    margin: 0px auto;
+    max-width: 2000px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Заголовок секции меню */
+.menu-section h2 {
+    font-size: 3em;
+    color: white;
+    margin-bottom: 50px;
+    margin-top: 0;
+    text-align: center;
+}
+
+/* Сетка для меню (2 колонки) */
+.menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 равные колонки */
+    gap: 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Ячейка меню (основное или барное меню) */
+.menu-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0px;
+    background: black;
+    border-radius: 0px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Эффект при наведении на ячейку меню */
+.menu-cell:hover {
+    transform: translateY(-5px); /* Подъем ячейки */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3); /* Тень */
+}
+
+/* Изображение в ячейке меню */
+.menu-cell-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover; /* Обрезка с сохранением пропорций */
+    border-radius: 0px;
+    margin-bottom: 0px;
+    border: 0px solid rgba(0, 0, 0, 0.9);
+}
+
+/* Кнопка в ячейке меню */
+.menu-cell-btn {
+    background-color: black;
+    color: #7D1212;
+    border: 1px solid #7D1212;
+    padding: 15px 150px;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 0px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-family: 'Ysabeau Infant', sans-serif;
+    width: 100%;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Эффект при наведении на кнопку меню */
+.menu-cell-btn:hover {
+    background-color: firebrick; /* Красный фон */
+    color: white; /* Белый текст */
+    transform: scale(1.05);
+}
+
+/* Модальное окно для просмотра меню */
+.menu-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: 2001;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Контент модального окна меню */
+.menu-modal-content {
+    background: #000000;
+    padding: 0px;
+    border-radius: 0px;
+    width: 90%;
+    max-width: 450px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 0 30px rgba(255, 202, 71, 0.5);
+    text-align: center;
+}
+
+/* Кнопка закрытия модального окна меню */
+.close-menu-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 0px;
+    cursor: pointer;
+    z-index: 0;
+}
+
+/* Изображение в модальном окне меню */
+.menu-modal-image {
+    width: 100%;
+    max-height: 80vh;
+    object-fit: contain; /* Вписываем изображение без обрезки */
+    border-radius: 0px;
+}
+
+/* Секция галереи */
+.gallery-section {
+    padding: 80px 150px;
+    text-align: left;
+    background: #000000;
+    border-radius: 0px;
+    margin: 0px auto;
+    max-width: 2000px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* Заголовок секции галереи */
+.gallery-section h2 {
+    font-size: 3.5em;
+    color: white;
+    margin-bottom: 10px;
+    margin-top: 0;
+    text-align: right;
+    margin-right: 85px;
+}
+
+/* Текст в секции галереи */
+.gallery-text {
+    font-size: 1.4em;
+    color: white;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    max-width: 800px;
+    margin-left: 87px;
+    margin-right: auto;
+}
+
+/* Слайдер галереи */
+.gallery-slider {
+    position: relative;
+    max-width: 1000px;
+    height: 500px;
+    margin: 0 auto 40px;
+    overflow: hidden; /* Скрываем части изображений за пределами */
+    border-radius: 0px;
+    box-shadow: 0 0 30px rgba(255, 202, 71, 0.2);
+}
+
+/* Контейнер слайдера */
+.slider-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+/* Слайд в слайдере */
+.slider-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0; /* По умолчанию невидим */
+    transition: opacity 1s ease-in-out; /* Плавное появление */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Активный слайд */
+.slider-slide.active {
+    opacity: 1; /* Видимый */
+}
+
+/* Изображение в слайдере */
+.slider-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Обрезка с сохранением пропорций */
+    border-radius: 0px;
+}
+
+/* Навигационные точки слайдера */
+.slider-nav {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+/* Точка навигации */
+.slider-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%; /* Круглая форма */
+    background-color: rgba(255, 255, 255, 0.5); /* Полупрозрачный белый */
+    border: 2px solid rgba(255, 202, 71, 0.3); /* Золотая рамка */
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Эффект при наведении на точку навигации */
+.slider-dot:hover {
+    background-color: rgba(255, 202, 71, 0.8);
+    transform: scale(1.2); /* Увеличение */
+}
+
+/* Активная точка навигации */
+.slider-dot.active {
+    background-color: #ffca47; /* Золотой фон */
+    border-color: #ffca47; /* Золотая рамка */
+    transform: scale(1.2); /* Увеличение */
+}
+
+/* Кнопка навигации слайдера */
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5); /* Полупрозрачный черный фон */
+    border-radius: 30px; /* Круглая кнопка */
+    color: white;
+    border: none;
+    width: 30px;
+    height: 30px;
+    font-size: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Эффект при наведении на кнопку навигации */
+.slider-btn:hover {
+    background-color: rgba(255, 202, 71, 0.8); /* Золотой фон */
+}
+
+/* Кнопка "назад" в слайдере */
+.slider-prev {
+    left: 20px;
+}
+
+/* Кнопка "вперед" в слайдере */
+.slider-next {
+    right: 20px;
+}
+
+/* Счетчик слайдов */
+.slider-counter {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #ffca47; /* Золотой текст */
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 14px;
+    z-index: 10;
+}
+
+/* Секция информации (с картой) */
+.section1 {
+    padding: 0px 0px;
+    background: #440000; /* Темно-красный фон */
+    border-radius: 0px;
+    max-width: 2000px;
+    width: 100%;
+    display: flex;
+    flex-direction: row-reverse; /* Карта слева, текст справа */
+    align-items: flex-start;
+    gap: 30px;
+    box-sizing: border-box;
+}
+
+/* Контейнер для текста в секции информации */
+.section1-content {
+    flex: 1;
+    text-align: left;
+}
+
+/* Заголовок секции информации */
+.section1 h2 {
+    font-size: 2em;
+    color: #ffca47; /* Золотой цвет */
+    margin-bottom: 30px;
+    margin-top: 60px;
+    text-align: left;
+    font-weight: bold;
+    margin-left: 280px;
+}
+
+/* Разделитель между секциями */
+.section-divider {
+    height: 60px;
+    background: transparent;
+}
+
+/* Блок с информацией (адрес, телефон, часы работы) */
+.info-block {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-left: 150px;
+}
+
+/* Элемент информации */
+.info-item {
+    color: white;
+    font-size: 1.2em;
+    line-height: 1.2;
+}
+
+/* Жирный текст в элементе информации */
+.info-item strong {
+    font-weight: bold;
+    color: white;
+    display: block;
+    margin-bottom: 3px;
+    font-size: 1.2em;
+}
+
+/* Контейнер для карты */
+.section1-map {
+    flex: 1;
+    min-width: 0; /* Чтобы карта не выходила за пределы */
+}
+
+/* Карта Яндекс */
+.section1 iframe {
+    width: 100%;
+    max-width: 100%;
+    height: 500px;
+    border: thick;
+    border-radius: 0px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* Тень */
+}
+
+/* Нижняя панель (футер) */
+.footer-bar {
+    position: relative;
+    width: 100%;
+    height: 120px;
+    background-image: url('1389.jpg');
+    background: rgba(0, 0, 0, 1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 0 10px;
+    box-sizing: border-box;
+    margin-top: 0px;
+}
+
+/* Текст в нижней панели */
+.footer-bar > div {
+    position: relative;
+    z-index: 4;
+    color: white;
+    font-size: 18px;
+}
+
+/* Затемнение фона нижней панели */
+.footer-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7); /* Полупрозрачный черный оверлей */
+    z-index: 2;
+}
+
+/* Модальное окно авторизации */
+.auth-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 2003;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Контент модального окна авторизации */
+.auth-modal-content {
+    background: #000000;
+    padding: 50px;
+    border-radius: 0px;
+    width: 90%;
+    max-width: 500px;
+    position: relative;
+    box-shadow: 0 0 20px rgba(255, 202, 71, 0.3);
+}
+
+/* Кнопка закрытия модального окна авторизации */
+.close-auth-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Заголовок модального окна авторизации */
+.auth-modal h2 {
+    color: white;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 2em;
+}
+
+/* Текст в модальном окне авторизации */
+.auth-modal p {
+    color: #ddd;
+    text-align: center;
+    margin-bottom: 30px;
+    line-height: 1.5;
+}
+
+/* Вкладки авторизации (вход/регистрация) */
+.auth-tabs {
+    display: flex;
+    margin-bottom: 30px;
+    border-bottom: 1px solid #444; /* Линия разделения */
+}
+
+/* Вкладка авторизации */
+.auth-tab {
+    flex: 1; /* Равная ширина */
+    padding: 15px;
+    background: none;
+    border: none;
+    color: #ddd; /* Светло-серый текст */
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Активная вкладка авторизации */
+.auth-tab.active {
+    color: #ffca47; /* Золотой текст */
+    border-bottom: 2px solid #ffca47; /* Золотая линия снизу */
+}
+
+/* Форма авторизации */
+.auth-form {
+    display: none; /* По умолчанию скрыта */
+}
+
+/* Активная форма авторизации */
+.auth-form.active {
+    display: block;
+}
+
+/* Ссылка в форме авторизации */
+.auth-link {
+    color: #ffca47; /* Золотой цвет */
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* Эффект при наведении на ссылку авторизации */
+.auth-link:hover {
+    text-decoration: underline;
+}
+
+/* Нижняя часть формы авторизации */
+.auth-footer {
+    text-align: center;
+    margin-top: 20px;
+    color: #ddd;
+    font-size: 1.0em;
+}
+
+/* Группа чекбокса */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+}
+
+/* Чекбокс */
+.checkbox-group input {
+    margin-right: 20px;
+}
+
+/* Метка чекбокса */
+.checkbox-group label {
+    color: #ddd;
+    font-size: 0.9em;
+}
+
+/* Модальное окно личного кабинета */
+.account-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 2004;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Контент модального окна личного кабинета */
+.account-modal-content {
+    background: #000000;
+    padding: 40px;
+    border-radius: 0px;
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 0 20px rgba(255, 202, 71, 0.3);
+}
+
+/* Кнопка закрытия модального окна личного кабинета */
+.close-account-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Заголовок модального окна личного кабинета */
+.account-modal h2 {
+    color: white;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 2.5em;
+}
+
+/* Сетка информации в личном кабинете */
+.account-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* 2 колонки */
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+/* Секция в личном кабинете */
+.account-section {
+    background: rgba(255, 255, 255, 0.05); /* Полупрозрачный белый фон */
+    padding: 20px;
+    border-radius: 0px;
+}
+
+/* Заголовок секции в личном кабинете */
+.account-section h3 {
+    color: #ffca47; /* Золотой цвет */
+    margin-top: 0;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+}
+
+/* Информация о пользователе */
+.user-info p {
+    color: white;
+    margin: 10px 0;
+    font-size: 1.1em;
+    position: relative;
+}
+
+/* Кнопка редактирования */
+.edit-info-btn {
+    background: none;
+    border: none;
+    color: #ffca47;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    padding: 5px 10px;
+    border-radius: 3px;
+    transition: all 0.3s ease;
+}
+
+.edit-info-btn:hover {
+    background: rgba(255, 202, 71, 0.1);
+}
+
+/* Список заказов */
+.orders-list {
+    max-height: 300px; /* Ограничение высоты */
+    overflow-y: auto; /* Вертикальная прокрутка */
+}
+
+/* Элемент заказа */
+.order-item {
+    background: rgba(255, 255, 255, 0.03); /* Очень прозрачный белый фон */
+    padding: 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    border-left: 3px solid #ffca47; /* Золотая линия слева */
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.order-item:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateX(5px);
+}
+
+/* Шапка заказа */
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+/* Номер заказа */
+.order-number {
+    color: #ffca47; /* Золотой цвет */
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+/* Дата заказа */
+.order-date {
+    color: #ddd; /* Светло-серый цвет */
+}
+
+/* Статус заказа */
+.order-status {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+/* Статус "В обработке" */
+.status-processing {
+    background: rgba(0, 123, 255, 0.2); /* Полупрозрачный синий фон */
+    color: #007bff; /* Синий текст */
+}
+
+/* Статус "Готовится" */
+.status-preparing {
+    background: rgba(255, 193, 7, 0.2); /* Полупрозрачный желтый фон */
+    color: #ffc107; /* Желтый текст */
+}
+
+/* Статус "Доставка" */
+.status-delivery {
+    background: rgba(23, 162, 184, 0.2); /* Полупрозрачный бирюзовый фон */
+    color: #17a2b8; /* Бирюзовый текст */
+}
+
+/* Статус "Завершен" */
+.status-completed {
+    background: rgba(40, 167, 69, 0.2); /* Полупрозрачный зеленый фон */
+    color: #28a745; /* Зеленый текст */
+}
+
+/* Кнопка выхода из аккаунта */
+.logout-btn {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    background-color: transparent; /* Прозрачный фон */
+    color: #ff4444; /* Красный текст */
+    border: 1px solid #ff4444; /* Красная рамка */
+    border-radius: 5px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+/* Эффект при наведении на кнопку выхода */
+.logout-btn:hover {
+    background-color: #ff4444; /* Красный фон */
+    color: white; /* Белый текст */
+}
+
+/* Модальное окно оформления заказа */
+.checkout-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 2005;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Контент модального окна оформления заказа */
+.checkout-modal-content {
+    background: #000000;
+    padding: 40px;
+    border-radius: 0px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 0 20px rgba(255, 202, 71, 0.3);
+}
+
+/* Кнопка закрытия модального окна оформления заказа */
+.close-checkout-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Заголовок модального окна оформления заказа */
+.checkout-modal h2 {
+    color: white;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 2em;
+}
+
+/* Список товаров в оформлении заказа */
+.checkout-items {
+    margin-bottom: 30px;
+}
+
+/* Элемент товара в оформлении заказа */
+.checkout-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* Серая линия разделения */
+}
+
+/* Итоговая сумма в оформлении заказа */
+.checkout-total {
+    text-align: right;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 2px solid white; /* Белая линия разделения */
+}
+
+/* Итоговая цена в оформлении заказа */
+.checkout-total .total-price {
+    font-size: 1.8em;
+    color: white;
+    font-weight: bold;
+}
+
+/* Стоимость доставки */
+.delivery-cost {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 1.1em;
+}
+
+/* Варианты доставки */
+.delivery-options {
+    margin: 20px 0;
+}
+
+/* Вариант доставки */
+.delivery-option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+/* Радиокнопка варианта доставки */
+.delivery-option input {
+    margin-right: 10px;
+}
+
+/* Метка варианта доставки */
+.delivery-option label {
+    color: white;
+    font-size: 1.1em;
+}
+
+/* Поля адреса доставки */
+.delivery-address-fields {
+    margin-top: 15px;
+    display: none; /* По умолчанию скрыто */
+}
+
+/* Активные поля адреса доставки */
+.delivery-address-fields.active {
+    display: block;
+}
+
+/* Кнопка завершения заказа */
+.complete-order-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #ffca47; /* Золотой фон */
+    color: #7D1212; /* Темно-красный текст */
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+/* Эффект при наведении на кнопку завершения заказа */
+.complete-order-btn:hover {
+    background-color: firebrick; /* Красный фон */
+    color: white; /* Белый текст */
+}
+
+/* Модальное окно оплаты */
+.payment-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 2006;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Контент модального окна оплаты */
+.payment-modal-content {
+    background: #000000;
+    padding: 40px;
+    border-radius: 0px;
+    width: 90%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 0 20px rgba(255, 202, 71, 0.3);
+}
+
+/* Кнопка закрытия модального окна оплаты */
+.close-payment-modal {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Заголовок модального окна оплаты */
+.payment-modal h2 {
+    color: white;
+    text-align: center;
+    margin-top: 0;
+    margin-bottom: 30px;
+    font-size: 2em;
+}
+
+/* Методы оплаты */
+.payment-methods {
+    margin: 20px 0;
+}
+
+/* Метод оплаты */
+.payment-method {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.payment-method:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.payment-method input {
+    margin-right: 15px;
+}
+
+.payment-method label {
+    color: white;
+    font-size: 1.1em;
+    cursor: pointer;
+    flex-grow: 1;
+}
+
+/* Кнопка оплаты */
+.pay-btn {
+    width: 100%;
+    padding: 15px;
+    background-color: #ffca47; /* Золотой фон */
+    color: #7D1212; /* Темно-красный текст */
+    border: none;
+    border-radius: 5px;
+    font-size: 1.2em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 20px;
+}
+
+/* Эффект при наведении на кнопку оплаты */
+.pay-btn:hover {
+    background-color: firebrick; /* Красный фон */
+    color: white; /* Белый текст */
+}
+
+/* Сообщение об успешном оформлении заказа */
+.order-success {
+    text-align: center;
+    padding: 40px 0;
+    display: none; /* По умолчанию скрыто */
+}
+
+/* Заголовок сообщения об успешном оформлении заказа */
+.order-success h3 {
+    color: #ffca47;
+    font-size: 2em;
+    margin-bottom: 20px;
+}
+
+/* Текст сообщения об успешном оформлении заказа */
+.order-success p {
+    color: white;
+    font-size: 1.2em;
+    margin-bottom: 30px;
+}
+
+/* Модальное окно деталей заказа */
+.order-details-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 2007;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Контент модального окна деталей заказа */
+.order-details-content {
+    background: #000000;
+    padding: 40px;
+    border-radius: 0px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 0 20px rgba(255, 202, 71, 0.3);
+}
+
+/* Кнопка закрытия модального окна деталей заказа */
+.close-order-details {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+/* Стили для редактируемых полей в личном кабинете */
+.edit-form {
+    display: none;
+}
+
+.edit-form.active {
+    display: block;
+}
+
+/* Оверлей для затемнения фона при открытой панели */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Полупрозрачный черный */
+    z-index: 19;
+    display: none;
+}
+
+/* Открытый оверлей */
+.overlay.open {
+    display: block;
+}
+
+/* ==================== АДАПТИВНОСТЬ ==================== */
+
+/* Планшеты от 768px до 1024px */
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+    
+    /* Общие настройки */
+    .section, 
+    .menu-section, 
+    .gallery-section, 
+    .delivery-section {
+        padding: 60px 40px;
+    }
+
+    /* Хедер */
+    .header-center {
+        font-size: 16px;
+        white-space: nowrap;
+    }
+    
+    .reservation-btn {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+    
+    .cart-btn {
+        padding: 6px 12px;
+        font-size: 14px;
+    }
+
+    /* Неоновый заголовок */
+    .neon-title {
+        font-size: 4em;
+        margin: 200px 0;
+    }
+
+    /* Секция "О ресторане" */
+    .section {
+        flex-direction: column;
+        gap: 30px;
+    }
+    
+    .section-content {
+        padding-left: 0;
+        width: 100%;
+    }
+    
+    .section h2 {
+        font-size: 2.5em;
+        text-align: center;
+    }
+    
+    .section p {
+        font-size: 1.2em;
+        text-align: center;
+    }
+    
+    .images-column {
+        max-width: 100%;
+        width: 100%;
+    }
+    
+    .section-image {
+        max-height: 500px;
+        object-fit: cover;
+    }
+
+    /* Каталог блюд */
+    .delivery-section h2 {
+        font-size: 2.5em;
+    }
+    
+    .category-nav {
+        gap: 12px;
+        padding: 0;
+        margin-bottom: 30px;
+    }
+    
+    .category-btn {
+        padding: 8px 16px;
+        font-size: 0.95em;
+    }
+    
+    .dishes-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 25px;
+    }
+    
+    .dish-card {
+        transition: transform 0.3s ease;
+    }
+    
+    .dish-card:hover {
+        transform: translateY(-3px);
+    }
+    
+    .dish-image {
+        height: 200px;
+    }
+    
+    .dish-info {
+        padding: 15px;
+    }
+    
+    .dish-name {
+        font-size: 1.3em;
+    }
+    
+    .dish-composition {
+        font-size: 0.95em;
+        margin-bottom: 10px;
+    }
+    
+    .dish-price {
+        font-size: 1.3em;
+    }
+    
+    .add-to-cart-btn {
+        padding: 8px 16px;
+        font-size: 0.95em;
+    }
+    
+    .category-container h3 {
+        font-size: 1.8em;
+        margin-bottom: 25px;
+    }
+
+    /* Секция меню (основное/барное) */
+    .menu-grid {
+        gap: 30px;
+    }
+    
+    .menu-cell-image {
+        height: 250px;
+    }
+    
+    .menu-cell-btn {
+        padding: 12px 40px;
+        font-size: 16px;
+    }
+
+    /* Галерея */
+    .gallery-section h2 {
+        font-size: 2.8em;
+        margin-right: 40px;
+        text-align: right;
+    }
+    
+    .gallery-text {
+        font-size: 1.3em;
+        margin-left: 40px;
+        max-width: 600px;
+    }
+    
+    .gallery-slider {
+        height: 400px;
+        max-width: 800px;
+    }
+    
+    .slider-btn {
+        width: 35px;
+        height: 35px;
+        font-size: 20px;
+    }
+
+    /* Секция с картой */
+    .section1 {
+        flex-direction: column;
+        gap: 30px;
+        padding: 0;
+    }
+    
+    .section1-content {
+        width: 100%;
+        padding: 40px 40px 20px 40px;
+        order: -1; /* Текст сверху */
+    }
+    
+    .section1 h2 {
+        margin-left: 0;
+        text-align: center;
+        margin-top: 0;
+    }
+    
+    .info-block {
+        margin-left: 0;
+        align-items: center;
+        text-align: center;
+    }
+    
+    .info-item {
+        text-align: center;
+    }
+    
+    .section1-map {
+        width: 100%;
+    }
+    
+    .section1 iframe {
+        height: 400px;
+    }
+
+    /* Модальные окна */
+    .modal-content,
+    .cart-modal-content,
+    .auth-modal-content,
+    .account-modal-content,
+    .checkout-modal-content {
+        max-width: 600px;
+        padding: 30px;
+    }
+    
+    .submit-btn {
+        width: 40%;
+    }
+
+    /* Личный кабинет */
+    .account-info {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .order-item {
+        padding: 12px;
+    }
+
+    /* Корзина */
+    .cart-item {
+        padding: 12px 0;
+    }
+    
+    .cart-item-name {
+        font-size: 1.3em;
+    }
+    
+    .quantity-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 1.1em;
+    }
+
+    /* Футер */
+    .footer-bar {
+        height: 100px;
+    }
+    
+    .footer-bar > div {
+        font-size: 16px;
+    }
+}
+
+/* ==================== телефоны до 767px ==================== */
+@media screen and (max-width: 767px) {
+    
+    /* Общие настройки */
+    body {
+        padding-top: 50px;
+    }
+    
+    .section, 
+    .menu-section, 
+    .gallery-section, 
+    .delivery-section {
+        padding: 40px 20px;
+    }
+
+    /* Хедер */
+    .header-bar {
+        padding: 0 15px;
+        height: 50px;
+    }
+    
+    .header-center {
+        font-size: 14px;
+        white-space: nowrap;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .header-right {
+        gap: 8px;
+    }
+    
+    .reservation-btn {
+        display: none; 
+    }
+    
+    .cart-btn {
+        padding: 5px 10px;
+        font-size: 13px;
+    }
+    
+    .account-btn {
+        font-size: 20px;
+        padding: 3px;
+    }
+    
+    .menu-toggle {
+        font-size: 22px;
+        padding: 3px;
+    }
+    
+    .cart-badge {
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+        top: -6px;
+        right: -6px;
+    }
+
+    /* Неоновый заголовок */
+    .neon-title {
+        font-size: 2.8em;
+        margin: 150px 0;
+    }
+    
+    .info-text {
+        font-size: 1em;
+    }
+
+    /* Секция "О ресторане" */
+    .section {
+        flex-direction: column;
+        gap: 20px;
+        padding: 40px 20px;
+    }
+    
+    .section-content {
+        padding-left: 0;
+        width: 100%;
+    }
+    
+    .section h2 {
+        font-size: 2.2em;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+    
+    .section p {
+        font-size: 1.1em;
+        line-height: 1.4;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+    
+    .images-column {
+        max-width: 100%;
+        gap: 20px;
+    }
+    
+    .section-image {
+        max-height: 350px;
+    }
+
+    /* Каталог блюд */
+    .delivery-section h2 {
+        font-size: 2.2em;
+        margin-bottom: 20px;
+    }
+    
+    .category-nav {
+        gap: 8px;
+        padding: 0 5px;
+        margin-bottom: 25px;
+        justify-content: flex-start;
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; 
+        padding-bottom: 10px;
+    }
+    
+    .category-nav::-webkit-scrollbar {
+        display: none; 
+    }
+    
+    .category-btn {
+        padding: 8px 14px;
+        font-size: 0.9em;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+    
+    .dishes-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .dish-card {
+        max-width: 100%;
+    }
+    
+    .dish-image {
+        height: 200px;
+    }
+    
+    .dish-info {
+        padding: 15px;
+    }
+    
+    .dish-name {
+        font-size: 1.3em;
+    }
+    
+    .dish-composition {
+        font-size: 0.95em;
+        margin-bottom: 10px;
+    }
+    
+    .dish-weight {
+        font-size: 0.85em;
+        margin-bottom: 10px;
+    }
+    
+    .dish-footer {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .dish-price {
+        font-size: 1.3em;
+    }
+    
+    .add-to-cart-btn {
+        padding: 8px 16px;
+        font-size: 0.95em;
+        flex: 1;
+    }
+    
+    .category-container h3 {
+        font-size: 1.6em;
+        margin-bottom: 20px;
+    }
+    
+    .show-more-btn {
+        padding: 12px 30px;
+        font-size: 1.1em;
+        margin: 30px auto;
+    }
+
+    /* Секция меню (основное/барное) */
+    .menu-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+    }
+    
+    .menu-cell-image {
+        height: 220px;
+    }
+    
+    .menu-cell-btn {
+        padding: 12px 20px;
+        font-size: 15px;
+    }
+
+    /* Галерея */
+    .gallery-section {
+        padding: 40px 15px;
+    }
+    
+    .gallery-section h2 {
+        font-size: 2.2em;
+        text-align: center;
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    
+    .gallery-text {
+        font-size: 1.1em;
+        margin-left: 0;
+        text-align: center;
+        max-width: 100%;
+        margin-bottom: 25px;
+    }
+    
+    .gallery-slider {
+        height: 250px;
+        margin-bottom: 20px;
+    }
+    
+    .slider-nav {
+        top: 10px;
+        right: 10px;
+        gap: 6px;
+    }
+    
+    .slider-dot {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .slider-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 18px;
+        background-color: rgba(0, 0, 0, 0.6);
+    }
+    
+    .slider-prev {
+        left: 10px;
+    }
+    
+    .slider-next {
+        right: 10px;
+    }
+
+    /* Секция с картой */
+    .section1 {
+        flex-direction: column;
+        gap: 20px;
+        padding: 0;
+    }
+    
+    .section1-content {
+        width: 100%;
+        padding: 30px 20px 10px 20px;
+        order: -1; /* Текст сверху */
+    }
+    
+    .section1 h2 {
+        margin-left: 0;
+        text-align: center;
+        font-size: 2em;
+        margin-top: 0;
+        margin-bottom: 20px;
+    }
+    
+    .info-block {
+        margin-left: 0;
+        align-items: center;
+        text-align: center;
+        gap: 20px;
+    }
+    
+    .info-item {
+        text-align: center;
+        font-size: 1.1em;
+    }
+    
+    .section1-map {
+        width: 100%;
+    }
+    
+    .section1 iframe {
+        height: 300px;
+    }
+
+    /* Футер */
+    .footer-bar {
+        height: 80px;
+    }
+    
+    .footer-bar > div {
+        font-size: 14px;
+    }
+
+    /* Модальные окна */
+    .modal-content,
+    .cart-modal-content,
+    .auth-modal-content,
+    .account-modal-content,
+    .checkout-modal-content,
+    .payment-modal-content,
+    .order-details-content {
+        width: 95%;
+        padding: 20px 15px;
+        max-height: 85vh;
+    }
+    
+    .modal h2,
+    .cart-modal h2,
+    .auth-modal h2,
+    .account-modal h2,
+    .checkout-modal h2,
+    .payment-modal h2 {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+    
+    .close-modal,
+    .close-cart-modal,
+    .close-auth-modal,
+    .close-account-modal,
+    .close-checkout-modal,
+    .close-payment-modal,
+    .close-order-details {
+        top: 10px;
+        right: 10px;
+        font-size: 22px;
+    }
+    
+    .form-group label {
+        font-size: 1em;
+    }
+    
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 8px;
+        font-size: 15px;
+    }
+    
+    .submit-btn {
+        width: 70%;
+        padding: 12px;
+        font-size: 14px;
+        margin-top: 25px;
+    }
+
+    /* Боковое меню */
+    .sidebar {
+        width: 280px;
+        right: -280px;
+    }
+    
+    .sidebar-logo {
+        max-width: 140px;
+        height: 120px;
+    }
+    
+    .menu-items {
+        margin: 40px 0;
+    }
+    
+    .menu-items a {
+        font-size: 1.1em;
+        padding: 8px;
+    }
+    
+    .sidebar-info {
+        bottom: 20px;
+        font-size: 0.9em;
+    }
+
+    /* Корзина */
+    .cart-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px 0;
+    }
+    
+    .cart-item-info {
+        width: 100%;
+    }
+    
+    .cart-item-name {
+        font-size: 1.2em;
+    }
+    
+    .cart-item-controls {
+        width: 100%;
+        justify-content: flex-end;
+    }
+    
+    .quantity-controls {
+        gap: 8px;
+    }
+    
+    .quantity-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 1em;
+    }
+    
+    .cart-total {
+        margin-top: 20px;
+        padding-top: 15px;
+    }
+    
+    .total-price {
+        font-size: 1.5em;
+    }
+    
+    .cart-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .clear-cart-btn,
+    .checkout-btn {
+        width: 100%;
+        padding: 12px;
+    }
+
+    /* Личный кабинет */
+    .account-info {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+    
+    .account-section {
+        padding: 15px;
+    }
+    
+    .account-section h3 {
+        font-size: 1.3em;
+        margin-bottom: 15px;
+    }
+    
+    .user-info p {
+        font-size: 1em;
+    }
+    
+    .order-item {
+        padding: 12px;
+    }
+    
+    .order-number {
+        font-size: 1em;
+    }
+    
+    .order-date {
+        font-size: 0.9em;
+    }
+
+    /* Оформление заказа */
+    .checkout-items {
+        margin-bottom: 20px;
+    }
+    
+    .checkout-item {
+        padding: 8px 0;
+        font-size: 0.95em;
+    }
+    
+    .delivery-options {
+        margin: 15px 0;
+    }
+    
+    .delivery-option {
+        margin-bottom: 8px;
+    }
+    
+    .delivery-option label {
+        font-size: 1em;
+    }
+    
+    .delivery-address-fields {
+        margin-top: 10px;
+    }
+    
+    .complete-order-btn,
+    .pay-btn {
+        padding: 12px;
+        font-size: 1.1em;
+    }
+    
+    .order-success h3 {
+        font-size: 1.6em;
+    }
+    
+    .order-success p {
+        font-size: 1.1em;
+    }
+
+    /* Авторизация */
+    .auth-tabs {
+        margin-bottom: 20px;
+    }
+    
+    .auth-tab {
+        padding: 12px;
+        font-size: 1em;
+    }
+    
+    .checkbox-group {
+        margin: 15px 0;
+    }
+    
+    .checkbox-group label {
+        font-size: 0.85em;
+    }
+}
+
+/* ==================== ТЕЛЕФОНЫ до 375px ==================== */
+@media screen and (max-width: 375px) {
+    
+    .neon-title {
+        font-size: 2.2em;
+        margin: 120px 0;
+    }
+    
+    .section h2 {
+        font-size: 1.8em;
+    }
+    
+    .delivery-section h2 {
+        font-size: 1.8em;
+    }
+    
+    .category-btn {
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+    
+    .dish-name {
+        font-size: 1.1em;
+    }
+    
+    .dish-price {
+        font-size: 1.1em;
+    }
+    
+    .gallery-section h2 {
+        font-size: 1.8em;
+    }
+    
+    .gallery-text {
+        font-size: 1em;
+    }
+    
+    .section1 h2 {
+        font-size: 1.8em;
+    }
+    
+    .info-item {
+        font-size: 1em;
+    }
+    
+    .modal h2 {
+        font-size: 1.5em;
+    }
+    
+    .submit-btn {
+        width: 80%;
+        padding: 10px;
+    }
+}

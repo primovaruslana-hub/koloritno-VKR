@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Колоритно</title>
+    <!-- Подключение шрифта Ysabeau Infant -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ysabeau+Infant:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Оверлей для затемнения при открытой панели -->
+    <div id="overlay" class="overlay"></div>
+
+    <!-- Модальное окно для бронирования -->
+    <div id="reservationModal" class="modal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeReservationModal()">&times;</button>
+            <h2>Бронирование столика</h2>
+            <form id="reservationForm">
+                <div class="form-group">
+                    <label for="name">Имя<span class="required-star">*</span></label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email<span class="required-star">*</span></label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Телефон<span class="required-star">*</span></label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="date">Дата<span class="required-star">*</span></label>
+                    <input type="date" id="date" name="date" required min="">
+                </div>
+
+                <div class="form-group">
+                    <label for="time">Время<span class="required-star">*</span></label>
+                    <select id="time" name="time" required>
+                        <option value="">Выберите время</option>
+                        <option value="10:00">10:00</option>
+                        <option value="11:00">11:00</option>
+                        <option value="12:00">12:00</option>
+                        <option value="13:00">13:00</option>
+                        <option value="14:00">14:00</option>
+                        <option value="15:00">15:00</option>
+                        <option value="16:00">16:00</option>
+                        <option value="17:00">17:00</option>
+                        <option value="18:00">18:00</option>
+                        <option value="19:00">19:00</option>
+                        <option value="20:00">20:00</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="guests">Кол-во гостей<span class="required-star">*</span></label>
+                    <select id="guests" name="guests" required>
+                        <option value="">Выберите количество</option>
+                        <option value="1">1 гость</option>
+                        <option value="2">2 гостя</option>
+                        <option value="3">3 гостя</option>
+                        <option value="4">4 гостя</option>
+                        <option value="5">5 гостей</option>
+                        <option value="6">6 гостей</option>
+                        <option value="7">7 гостей</option>
+                        <option value="8">8 гостей</option>
+                    </select>
+                </div>
+
+                <button type="submit" class="submit-btn">Забронировать</button>
+
+                <div class="contact-note">
+                    Если у вас остались вопросы и пожелания, звоните в ресторан
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно для основного меню -->
+    <div id="mainMenuModal" class="menu-modal">
+        <div class="menu-modal-content">
+            <button class="close-menu-modal" onclick="closeMainMenuModal()">&times;</button>
+            <img src="22.png" alt="Основное меню" class="menu-modal-image">
+        </div>
+    </div>
+
+    <!-- Модальное окно для барного меню -->
+    <div id="barMenuModal" class="menu-modal">
+        <div class="menu-modal-content">
+            <button class="close-menu-modal" onclick="closeBarMenuModal()">&times;</button>
+            <img src="23.png" alt="Барное меню" class="menu-modal-image">
+        </div>
+    </div>
+
+<!-- Модальное окно корзины -->
+<div id="cartModal" class="cart-modal">
+    <div class="cart-modal-content">
+        <button class="close-cart-modal" onclick="closeCartModal()">&times;</button>
+        <h2>Корзина</h2>
+
+        <div class="cart-items-container" id="cartItemsContainer">
+            <div id="emptyCartMessage" style="text-align: center; color: #888; padding: 40px; display: block;">
+                🛒 Ваша корзина пуста
+            </div>
+        </div>
+
+        <div class="cart-total">
+            <div>Итого:</div>
+            <div class="total-price" id="cartTotal">0 ₽</div>
+        </div>
+
+        <div class="cart-actions">
+            <button class="clear-cart-btn" onclick="clearCart()">Очистить корзину</button>
+            <button class="checkout-btn" onclick="openCheckoutModal()">Оформить заказ</button>
+        </div>
+    </div>
+</div>
+
+    <!-- Модальное окно авторизации -->
+    <div id="authModal" class="auth-modal">
+        <div class="auth-modal-content">
+            <button class="close-auth-modal" onclick="closeAuthModal()">&times;</button>
+
+            <div class="auth-tabs">
+                <button class="auth-tab active" onclick="switchAuthTab('login')">Вход</button>
+                <button class="auth-tab" onclick="switchAuthTab('register')">Регистрация</button>
+            </div>
+
+            <!-- Форма входа -->
+            <div id="loginForm" class="auth-form active">
+                <h2>Вход</h2>
+                <div class="form-group">
+                    <label for="loginPhone">Номер телефона<span class="required-star">*</span></label>
+                    <input type="tel" id="loginPhone" placeholder="+7 (___) ___-__-__">
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="loginAgreement">
+                    <label for="loginAgreement">Я согласен(-на) с обработкой персональных данных и ознакомлен(а) с пользовательским соглашением</label>
+                </div>
+
+                <button class="submit-btn" id="loginBtn">Войти</button>
+            </div>
+
+            <!-- Форма регистрации (3 шага) -->
+            <div id="registerForm" class="auth-form">
+                <h2>Регистрация</h2>
+                
+                <!-- ШАГ 1: Ввод телефона -->
+                <div id="phoneStep">
+                    <div class="form-group">
+                        <label for="registerPhone">Номер телефона<span class="required-star">*</span></label>
+                        <input type="tel" id="registerPhone" placeholder="+7 (___) ___-__-__">
+                    </div>
+
+                    <div class="checkbox-group">
+                        <input type="checkbox" id="registerAgreement">
+                        <label for="registerAgreement">Я согласен(-на) с обработкой персональных данных</label>
+                    </div>
+
+                    <button class="submit-btn" id="sendCodeBtn">Получить код</button>
+                </div>
+
+                <!-- ШАГ 2: Подтверждение кода -->
+                <div id="codeStep" style="display: none;">
+                    <div class="form-group">
+                        <label for="verificationCode">Введите код подтверждения<span class="required-star">*</span></label>
+                        <input type="text" id="verificationCode" maxlength="6" placeholder="6 цифр">
+                    </div>
+                    <div id="codeHint" style="color: #ffca47; text-align: center; margin: 10px 0;"></div>
+                    <input type="hidden" id="verifiedPhone">
+                    <button class="submit-btn" id="verifyCodeBtn">Подтвердить код</button>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <a href="#" onclick="document.getElementById('codeStep').style.display='none'; document.getElementById('phoneStep').style.display='block'; return false;" style="color: #ffca47;">← Назад</a>
+                    </div>
+                </div>
+
+                <!-- ШАГ 3: Заполнение данных -->
+                <div id="registerStep" style="display: none;">
+                    <div class="form-group">
+                        <label for="registerName">Имя<span class="required-star">*</span></label>
+                        <input type="text" id="registerName">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerEmail">Email<span class="required-star">*</span></label>
+                        <input type="email" id="registerEmail">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerPassword">Пароль<span class="required-star">*</span></label>
+                        <input type="password" id="registerPassword" placeholder="минимум 6 символов">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="registerBirthDate">Дата рождения</label>
+                        <input type="date" id="registerBirthDate">
+                    </div>
+
+                    <input type="hidden" id="finalPhone">
+                    <input type="hidden" id="finalCode">
+
+                    <button class="submit-btn" id="completeRegisterBtn">Зарегистрироваться</button>
+                    <div style="text-align: center; margin-top: 15px;">
+                        <a href="#" onclick="document.getElementById('registerStep').style.display='none'; document.getElementById('phoneStep').style.display='block'; return false;" style="color: #ffca47;">← Назад</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно личного кабинета -->
+    <div id="accountModal" class="account-modal">
+        <div class="account-modal-content">
+            <button class="close-account-modal" onclick="closeAccountModal()">&times;</button>
+            <h2>Личный кабинет</h2>
+
+            <div class="account-info">
+                <div class="account-section">
+                    <h3>Личная информация</h3>
+                    <div class="user-info" id="userInfo">
+                        <!-- Информация будет добавлена динамически -->
+                    </div>
+                    <button class="edit-info-btn" onclick="toggleEditForm()">✏️ Редактировать</button>
+
+                    <div id="editForm" class="edit-form">
+                        <div class="form-group">
+                            <label for="editName">Имя</label>
+                            <input type="text" id="editName" class="field-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="editEmail">Email</label>
+                            <input type="email" id="editEmail" class="field-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="editPhone">Телефон</label>
+                            <input type="tel" id="editPhone" class="field-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="editBirthDate">Дата рождения</label>
+                            <input type="date" id="editBirthDate" class="field-input">
+                        </div>
+                        <div style="display: flex; gap: 10px; margin-top: 20px;">
+                            <button class="submit-btn" onclick="saveUserInfo()" style="width: auto; padding: 10px 20px;">Сохранить</button>
+                            <button class="clear-cart-btn" onclick="toggleEditForm()" style="width: auto; padding: 10px 20px;">Отмена</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="account-section">
+                    <h3>История заказов</h3>
+                    <div class="orders-list" id="ordersList">
+                        <!-- Заказы будут добавлены динамически -->
+                    </div>
+                </div>
+            </div>
+
+            <button class="logout-btn" onclick="logout()">Выйти из аккаунта</button>
+        </div>
+    </div>
+
+    <!-- Модальное окно оформления заказа -->
+    <div id="checkoutModal" class="checkout-modal">
+        <div class="checkout-modal-content">
+            <button class="close-checkout-modal" onclick="closeCheckoutModal()">&times;</button>
+
+            <div id="checkoutForm">
+                <h2>Оформление заказа</h2>
+
+                <div class="checkout-items" id="checkoutItems">
+                    <!-- Товары будут добавлены динамически -->
+                </div>
+
+                <div class="delivery-options">
+                    <h3>Способ получения</h3>
+                    <div class="delivery-option">
+                        <input type="radio" id="deliveryPickup" name="delivery" value="pickup" checked onchange="toggleDeliveryAddress()">
+                        <label for="deliveryPickup">Самовывоз из ресторана</label>
+                    </div>
+                    <div class="delivery-option">
+                        <input type="radio" id="deliveryDelivery" name="delivery" value="delivery" onchange="toggleDeliveryAddress()">
+                        <label for="deliveryDelivery">Доставка (+150 ₽)</label>
+                    </div>
+                </div>
+
+                <div class="delivery-address-fields" id="deliveryAddressFields">
+                    <div class="form-group">
+                        <label for="deliveryCity">Город<span class="required-star">*</span></label>
+                        <input type="text" id="deliveryCity" name="city" value="Нефтеюганск" readonly>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deliveryStreet">Улица, дом, квартира<span class="required-star">*</span></label>
+                        <input type="text" id="deliveryStreet" name="street" placeholder="ул. Примерная, д. 1, кв. 1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deliveryEntrance">Подъезд</label>
+                        <input type="text" id="deliveryEntrance" name="entrance" placeholder="1">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deliveryFloor">Этаж</label>
+                        <input type="number" id="deliveryFloor" name="floor" placeholder="3" min="1" max="99">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="deliveryComment">Комментарий к заказу</label>
+                        <textarea id="deliveryComment" name="comment" rows="3" placeholder="Дополнительные пожелания"></textarea>
+                    </div>
+                </div>
+
+                <div class="checkout-total">
+                    <div class="delivery-cost" id="deliveryCostItem" style="display: none;">
+                        <span>Доставка:</span>
+                        <span>150 ₽</span>
+                    </div>
+                    <div>Итого к оплате:</div>
+                    <div class="total-price" id="checkoutTotal">0 ₽</div>
+                </div>
+
+                <button class="complete-order-btn" onclick="proceedToPayment()">Перейти к оплате</button>
+            </div>
+
+            <div class="order-success" id="orderSuccess">
+                <h3>Заказ оформлен!</h3>
+                <p>Ваш заказ №<span id="orderNumber">12346</span> принят в обработку.</p>
+                <p>Ожидайте подтверждение по телефону.</p>
+                <p>Примерное время доставки: <strong>40-60 минут</strong></p>
+                <button class="complete-order-btn" onclick="closeCheckoutModal()">Понятно</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно оплаты -->
+    <div id="paymentModal" class="payment-modal">
+        <div class="payment-modal-content">
+            <button class="close-payment-modal" onclick="closePaymentModal()">&times;</button>
+            <h2>Оплата заказа</h2>
+
+            <div class="checkout-items" id="paymentItems">
+                <!-- Товары будут добавлены динамически -->
+            </div>
+
+            <div class="checkout-total">
+                <div>К оплате:</div>
+                <div class="total-price" id="paymentTotal">0 ₽</div>
+            </div>
+
+            <div class="payment-methods">
+                <h3>Выберите способ оплаты</h3>
+                <div class="payment-method">
+                    <input type="radio" id="paymentCard" name="paymentMethod" value="card" checked>
+                    <label for="paymentCard">Банковская карта</label>
+                </div>
+                <div class="payment-method">
+                    <input type="radio" id="paymentCash" name="paymentMethod" value="cash">
+                    <label for="paymentCash">Наличными при получении</label>
+                </div>
+                <div class="payment-method">
+                    <input type="radio" id="paymentOnline" name="paymentMethod" value="online">
+                    <label for="paymentOnline">Онлайн-оплата</label>
+                </div>
+            </div>
+
+            <button class="pay-btn" onclick="processPayment()">Оплатить</button>
+
+            <div class="order-success" id="paymentSuccess" style="display: none;">
+                <h3>Оплата прошла успешно!</h3>
+                <p>Ваш заказ №<span id="paymentOrderNumber">12346</span> подтвержден.</p>
+                <p>Ожидайте подтверждение по телефону.</p>
+                <p>Примерное время доставки: <strong>40-60 минут</strong></p>
+                <button class="pay-btn" onclick="closePaymentModal()">Понятно</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Модальное окно деталей заказа -->
+    <div id="orderDetailsModal" class="order-details-modal">
+        <div class="order-details-content">
+            <button class="close-order-details" onclick="closeOrderDetailsModal()">&times;</button>
+            <h2>Детали заказа</h2>
+
+            <div id="orderDetailsContent">
+                <!-- Детали заказа будут заполнены динамически -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Боковая панель меню -->
+    <div id="sidebar" class="sidebar">
+        <button class="close-btn" onclick="toggleSidebar()">&times;</button>
+        <div class="sidebar-logo">
+            <img src="2.png" alt="Логотип бренда">
+        </div>
+        <ul class="menu-items">
+            <li><a href="#about">О ресторане</a></li>
+            <li><a href="#delivery">Доставка</a></li>
+            <li><a href="#menu">Меню</a></li>
+            <li><a href="#gallery">Галерея</a></li>
+            <li><a href="#info">Информация</a></li>
+        </ul>
+        <div class="sidebar-info">
+            <div class="address">Нефтеюганск, Усть-Балыкская ул., 2Б</div>
+            <div class="hours">пн-вс: 10:00-22:00</div>
+        </div>
+    </div>
+
+    <!-- Верхняя красная панель с кнопками -->
+    <div class="header-bar">
+        <div></div> <!-- Пустой элемент для баланса -->
+        <div class="header-center">
+            ВКУСНО ПО-ДОМАШНЕМУ
+        </div>
+        <div class="header-right">
+            <button class="reservation-btn" onclick="openReservationModal()">Бронирование</button>
+            <button class="cart-btn" onclick="openCartModal()">
+                Корзина
+                <span class="cart-badge" id="cartBadge">0</span>
+            </button>
+            <button class="account-btn" onclick="openAccountModal()">👤</button>
+            <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+        </div>
+    </div>
+
+    <!-- Секция обложки -->
+    <section class="cover">
+        <h1 class="neon-title">КОЛОРИТНО</h1>
+        <div class="main-container">
+            <div class="info-text">
+                <div class="address">Нефтеюганск, Усть-Балыкская ул., 2Б</div>
+                <div class="hours">пн-вс: 10:00-22:00</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция "О ресторане" -->
+    <section id="about" class="section">
+        <div class="section-content">
+            <h2>О ресторане</h2>
+            <p>Колоритно — это больше, чем просто ресторан.
+Мы открылись в Нефтеюганске, чтобы дарить жителям города яркие гастрономические впечатления и тёплую, душевную атмосферу.
+В «Колоритно» сочетаются современные кулинарные тренды и лучшие традиции домашней кухни. Мы тщательно отбираем только свежие продукты и готовим каждое блюдо с душой.
+<p>У нас вы можете насладиться вкусным ужином в уютном зале, забронировать столик для важной встречи, семейного праздника или романтического вечера, а также заказать любимые блюда с быстрой доставкой.</p>
+<p>Наши ценности — это высокое качество продуктов, искреннее гостеприимство, внимательное отношение к каждому гостю и яркий, запоминающийся вкус каждого блюда. За каждым блюдом стоит команда поваров, которые искренне любят своё дело и стремятся сделать ваш вечер особенным.</p>
+            <p>Приходите! И вы обязательно поймете, почему все находят в нашей кухне и атмосфере что-то родное и близкое.</p>
+        </div>
+        <div class="images-column">
+            <img src="11.png" alt="Интерьер ресторана 'Колоритно'" class="section-image" />
+        </div>
+    </section>
+
+    <!-- Секция: Доставка -->
+    <section id="delivery" class="delivery-section">
+        <h2>Доставка</h2>
+
+        <!-- Навигация по категориям -->
+        <div class="category-nav">
+            <button class="category-btn active" data-category="breakfast">Завтрак</button>
+            <button class="category-btn" data-category="hot">Горячие блюда</button>
+            <button class="category-btn" data-category="soups">Супы</button>
+            <button class="category-btn" data-category="pizza">Пицца</button>
+            <button class="category-btn" data-category="salads">Салаты</button>
+            <button class="category-btn" data-category="desserts">Десерты</button>
+            <button class="category-btn" data-category="drinks">Напитки</button>
+        </div>
+
+        <!-- Категория: Завтрак -->
+        <div class="category-container active" id="breakfast-category">
+            <h3>Завтрак</h3>
+            <div class="dishes-grid">
+                <!-- Блюдо 1 -->
+                <div class="dish-card" data-id="1" data-name="Сырники с ягодами" data-price="400">
+                    <img src="210.png" alt="Сырники с ягодами" class="dish-image">
+                    <div class="dish-info">
+                        <div class="dish-name">Сырники с ягодами</div>
+                        <div class="dish-composition">Творожные сырники с малиной, черникой и мёдом</div>
+                        <div class="dish-weight">250 г</div>
+                        <div class="dish-footer">
+                            <div class="dish-price">400 ₽</div>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Блюдо 2 -->
+                <div class="dish-card" data-id="2" data-name="Омлет с ветчиной" data-price="350">
+                    <img src="211.png" alt="Омлет с ветчиной" class="dish-image">
+                    <div class="dish-info">
+                        <div class="dish-name">Омлет с ветчиной</div>
+                        <div class="dish-composition">Воздушный омлет с ветчиной, сыром и зеленью</div>
+                        <div class="dish-weight">280 г</div>
+                        <div class="dish-footer">
+                            <div class="dish-price">350 ₽</div>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Блюдо 3 -->
+                <div class="dish-card" data-id="3" data-name="Каша овсяная" data-price="300">
+                    <img src="212.jpg" alt="Каша овсяная" class="dish-image">
+                    <div class="dish-info">
+                        <div class="dish-name">Каша овсяная</div>
+                        <div class="dish-composition">Овсяная каша с бананом, орехами и мёдом</div>
+                        <div class="dish-weight">300 г</div>
+                        <div class="dish-footer">
+                            <div class="dish-price">300 ₽</div>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Категория: Горячие блюда -->
+        <div class="category-container" id="hot-category">
+            <h3>Горячие блюда</h3>
+            <div class="dishes-grid">
+                <!-- Блюдо 1 -->
+                <div class="dish-card" data-id="4" data-name="Стейк Рибай" data-price="890">
+                    <img src="213.jpg" alt="Стейк Рибай" class="dish-image">
+                    <div class="dish-info">
+                        <div class="dish-name">Стейк Рибай</div>
+                        <div class="dish-composition">Мраморная говядина с овощами гриль и соусом песто</div>
+                        <div class="dish-weight">350 г</div>
+                        <div class="dish-footer">
+                            <div class="dish-price">890 ₽</div>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Блюдо 2 -->
+                <div class="dish-card" data-id="5" data-name="Утка с яблоками" data-price="750">
+                    <img src="214.jpg" alt="Утка с яблоками" class="dish-image">
+                    <div class="dish-info">
+                        <div class="dish-name">Утка с яблоками</div>
+                        <div class="dish-composition">Утиная ножка с печёными яблоками и картофельным пюре</div>
+                        <div class="dish-weight">320 г</div>
+                        <div class="dish-footer">
+                            <div class="dish-price">750 ₽</div>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Блюдо 3 -->
+                <div class="dish-card" data-id="6" data-name="Лосось на гриле" data-price="680">
+                    <img src="215.jpg" alt="Лосось на гриле" class="dish-image">
+                    <div class="dish-info">
+                        <div class="dish-name">Лосось на гриле</div>
+                        <div class="dish-composition">Филе лосося с лимоном, спаржей и соусом тар-тар</div>
+                        <div class="dish-weight">280 г</div>
+                        <div class="dish-footer">
+                            <div class="dish-price">680 ₽</div>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Категория: Супы -->
+        <div class="category-container" id="soups-category">
+            <h3>Супы</h3>
+            <div class="dishes-grid">
+                <!-- Блюдо 1 -->
+                <div class="dish-card" data-id="7" data-name="Борщ с говядиной" data-price="320">
+                    <img src="216.jpg" alt="Борщ с говядиной" class="dish-image">
+                    <div class="dish-info">
+                        <div class="dish-name">Борщ с говядиной</div>
+                        <div class="dish-composition">Классический борщ с говядиной, сметаной и зеленью</div>
+                        <div class="dish-weight">350 г</div>
+                        <div class="dish-footer">
+                            <div class="dish-price">320 ₽</div>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Блюдо 2 -->
+                <div class="dish-card" data-id="8" data-name="Крем-суп из шампиньонов" data-price="290">
+                    <img src="217.jpg" alt="Крем-суп из шампиньонов" class="dish-image">
+                    <div class="dish-info">
+                        <div class="dish-name">Крем-суп из шампиньонов</div>
+                        <div class="dish-composition">Нежный грибной крем-суп с гренками и трюфельным маслом</div>
+                        <div class="dish-weight">300 г</div>
+                        <div class="dish-footer">
+                            <div class="dish-price">290 ₽</div>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Блюдо 3 -->
+                <div class="dish-card" data-id="9" data-name="Солянка сборная" data-price="350">
+                    <img src="218.jpg" alt="Солянка сборная" class="dish-image">
+                    <div class="dish-info">
+                        <div class="dish-name">Солянка сборная</div>
+                        <div class="dish-composition">Наваристая солянка с колбасами, оливками и лимоном</div>
+                        <div class="dish-weight">380 г</div>
+                        <div class="dish-footer">
+                            <div class="dish-price">350 ₽</div>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Категория: Пицца -->
+        <div class="category-container" id="pizza-category">
+            <h3>Пицца</h3>
+            <div class="dishes-grid">
+                <!-- Блюдо 1 -->
+                <div class="dish-card" data-id="10" data-name="Маргарита" data-price="590">
+                    <img src="219.jpg" alt="Маргарита" class="dish-image">
+                    <div class="dish-info">
+                        <div class="dish-name">Маргарита</div>
+                        <div class="dish-composition">Томатный соус, моцарелла, базилик, оливковое масло</div>
+                        <div class="dish-weight">450 г</div>
+                        <div class="dish-footer">
+                            <div class="dish-price">590 ₽</div>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Блюдо 2 -->
+                <div class="dish-card" data-id="11" data-name="Пепперони" data-price="650">
+                    <img src="220.jpg" alt="Пепперони" class="dish-image">
+                    <div class="dish-info">
+                        <div class="dish-name">Пепперони</div>
+                        <div class="dish-composition">Пепперони, моцарелла, томатный соус, орегано</div>
+                        <div class="dish-weight">480 г</div>
+                        <div class="dish-footer">
+                            <div class="dish-price">650 ₽</div>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Блюдо 3 -->
+                <div class="dish-card" data-id="12" data-name="Четыре сыра" data-price="680">
+                    <img src="221.jpg" alt="Четыре сыра" class="dish-image">
+                    <div class="dish-info">
+                        <div class="dish-name">Четыре сыра</div>
+                        <div class="dish-composition">Моцарелла, горгонзола, пармезан, фета, сливочный соус</div>
+                        <div class="dish-weight">470 г</div>
+                        <div class="dish-footer">
+                            <div class="dish-price">680 ₽</div>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Категория: Салаты -->
+        <div class="category-container" id="salads-category">
+            <h3>Салаты</h3>
+            <div class="dishes-grid">
+                <!-- Блюдо 1 -->
+                <div class="dish-card" data-id="13" data-name="Цезарь с курицей" data-price="420">
+                    <img src="222.jpg" alt="Цезарь с курицей" class="dish-image">
+                    <div class="dish-info">
+                        <div class="dish-name">Цезарь с курицей</div>
+                        <div class="dish-composition">Лист айсберг, курица гриль, пармезан, соус цезарь, гренки</div>
+                        <div class="dish-weight">280 г</div>
+                        <div class="dish-footer">
+                            <div class="dish-price">420 ₽</div>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Блюдо 2 -->
+                <div class="dish-card" data-id="14" data-name="Греческий" data-price="380">
+                    <img src="223.jpg" alt="Греческий" class="dish-image">
+                    <div class="dish-info">
+                        <div class="dish-name">Греческий</div>
+                        <div class="dish-composition">Помидоры, огурцы, перец, оливки, фета, оливковое масло</div>
+                        <div class="dish-weight">250 г</div>
+                        <div class="dish-footer">
+                            <div class="dish-price">380 ₽</div>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Блюдо 3 -->
+                <div class="dish-card" data-id="15" data-name="Цезарь с креветками" data-price="520">
+                    <img src="224.png" alt="Цезарь с креветками" class="dish-image">
+                    <div class="dish-info">
+                        <div class="dish-name">Цезарь с креветками</div>
+                        <div class="dish-composition">Тигровые креветки, томаты черри, лист айсберг, соус цезарь</div>
+                        <div class="dish-weight">260 г</div>
+                        <div class="dish-footer">
+                            <div class="dish-price">520 ₽</div>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Категория: Десерты -->
+        <div class="category-container" id="desserts-category">
+            <h3>Десерты</h3>
+            <div class="dishes-grid">
+                <!-- Блюдо 1 -->
+                <div class="dish-card" data-id="16" data-name="Тирамису" data-price="450">
+                    <img src="225.jpg" alt="Тирамису" class="dish-image">
+                    <div class="dish-info">
+                        <div class="dish-name">Тирамису</div>
+                        <div class="dish-composition">Классический итальянский десерт с маскарпоне и кофе</div>
+                        <div class="dish-weight">180 г</div>
+                        <div class="dish-footer">
+                            <div class="dish-price">450 ₽</div>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Блюдо 2 -->
+                <div class="dish-card" data-id="17" data-name="Чизкейк Нью-Йорк" data-price="450">
+                    <img src="226.jpg" alt="Чизкейк Нью-Йорк" class="dish-image">
+                    <div class="dish-info">
+                        <div class="dish-name">Чизкейк Нью-Йорк</div>
+                        <div class="dish-composition">Нежный чизкейк с ягодным соусом</div>
+                        <div class="dish-weight">200 г</div>
+                        <div class="dish-footer">
+                            <div class="dish-price">450 ₽</div>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Блюдо 3 -->
+                <div class="dish-card" data-id="18" data-name="Панна Котта" data-price="400">
+                    <img src="227.jpg" alt="Панна Котта" class="dish-image">
+                    <div class="dish-info">
+                        <div class="dish-name">Панна Котта</div>
+                        <div class="dish-composition">Ванильная панна котта с ягодным соусом</div>
+                        <div class="dish-weight">160 г</div>
+                        <div class="dish-footer">
+                            <div class="dish-price">400 ₽</div>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Категория: Напитки -->
+        <div class="category-container" id="drinks-category">
+            <h3>Напитки</h3>
+            <div class="dishes-grid">
+                <!-- Блюдо 1 -->
+                <div class="dish-card" data-id="19" data-name="Мохито" data-price="350">
+                    <img src="228.jpg" alt="Мохито" class="dish-image">
+                    <div class="dish-info">
+                        <div class="dish-name">Мохито</div>
+                        <div class="dish-composition">Лайм, мята, содовая, сахар</div>
+                        <div class="dish-weight">350 мл</div>
+                        <div class="dish-footer">
+                            <div class="dish-price">350 ₽</div>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Блюдо 2 -->
+                <div class="dish-card" data-id="20" data-name="Морс" data-price="180">
+                    <img src="229.webp" alt="Морс" class="dish-image">
+                    <div class="dish-info">
+                        <div class="dish-name">Морс</div>
+                        <div class="dish-composition">Клюква, вода, сахар</div>
+                        <div class="dish-weight">300 мл</div>
+                        <div class="dish-footer">
+                            <div class="dish-price">180 ₽</div>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Блюдо 3 -->
+                <div class="dish-card" data-id="21" data-name="Коктейль молочный" data-price="280">
+                    <img src="230.jpg" alt="Коктейль молочный" class="dish-image">
+                    <div class="dish-info">
+                        <div class="dish-name">Коктейль молочный</div>
+                        <div class="dish-composition">Банан, клубника, молоко, мёд, лед</div>
+                        <div class="dish-weight">400 мл</div>
+                        <div class="dish-footer">
+                            <div class="dish-price">280 ₽</div>
+                            <button class="add-to-cart-btn">В корзину</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="show-more-btn" id="showMoreBtn">Показать еще</button>
+    </section>
+
+    <!-- Секция "Меню" -->
+    <section id="menu" class="menu-section">
+        <h2>Меню ресторана</h2>
+        <div class="menu-grid">
+            <!-- Первая ячейка - Основное меню -->
+            <div class="menu-cell">
+                <img src="10.jpg" alt="Основное меню" class="menu-cell-image">
+                <button class="menu-cell-btn" onclick="openMainMenuModal()">Основное меню</button>
+            </div>
+
+            <!-- Вторая ячейка - Барное меню -->
+            <div class="menu-cell">
+                <img src="9.png" alt="Барное меню" class="menu-cell-image">
+                <button class="menu-cell-btn" onclick="openBarMenuModal()">Барное меню</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция "Галерея" -->
+    <section id="gallery" class="gallery-section">
+        <h2>Галерея</h2>
+        <div class="gallery-text">
+Погрузитесь в атмосферу «Колоритно» — яркую, уютную и по-настоящему тёплую.</div>
+
+        <!-- Слайдер галереи -->
+        <div class="gallery-slider">
+            <div class="slider-container">
+                <!-- Слайды галереи -->
+                <div class="slider-slide">
+                    <img src="05.png" alt="Интерьер ресторана 6" class="slider-image">
+                </div>
+                <div class="slider-slide active">
+                    <img src="0.png" alt="Интерьер ресторана 1" class="slider-image">
+                </div>
+                <div class="slider-slide">
+                    <img src="01.png" alt="Интерьер ресторана 2" class="slider-image">
+                </div>
+                <div class="slider-slide">
+                    <img src="02.png" alt="Интерьер ресторана 3" class="slider-image">
+                </div>
+                <div class="slider-slide">
+                    <img src="03.png" alt="Интерьер ресторана 4" class="slider-image">
+                </div>
+                <div class="slider-slide">
+                    <img src="04.png" alt="Интерьер ресторана 5" class="slider-image">
+                </div>
+            </div>
+
+            <!-- Навигационные точки -->
+            <div class="slider-nav">
+                <div class="slider-dot active" data-slide="0"></div>
+                <div class="slider-dot" data-slide="1"></div>
+                <div class="slider-dot" data-slide="2"></div>
+                <div class="slider-dot" data-slide="3"></div>
+                <div class="slider-dot" data-slide="4"></div>
+                <div class="slider-dot" data-slide="5"></div>
+            </div>
+
+            <!-- Кнопки навигации -->
+            <button class="slider-btn slider-prev">‹</button>
+            <button class="slider-btn slider-next">›</button>
+        </div>
+    </section>
+
+<!-- Секция "Информация" -->
+<section id="info" class="section1">
+    <!-- Контейнер для карты (слева) -->
+    <div class="section1-map">
+        <div class="map-container">
+            <iframe src="https://yandex.ru/map-widget/v1/?ll=72.639130%2C61.097202&z=17" width="560" height="400" frameborder="1" allowfullscreen="true" style="position:relative;">
+            </iframe>
+        </div>
+    </div>
+
+        <!-- Контейнер для текста (справа) -->
+        <div class="section1-content">
+            <h2>Информация</h2>
+
+            <div class="info-block">
+                <div class="info-item">
+                    <strong>Нефтеюганск</strong><br>
+                    Усть-Балыкская ул., 2Б,<br>
+                </div>
+
+                <div class="info-item">
+                    <strong>+7 (999) 999-99-99</strong>
+                </div>
+
+                <div class="info-item">
+                    <strong>Режим работы:</strong><br>
+                    пн-вс: 10:00 - 22:00
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- нижняя  панель меню -->
+    <div class="footer-bar">
+        <div>
+            Колоритно 2026 - проект ВКР Примовой Р.З
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script src="menu.js"></script>
+</body>
+</html>
